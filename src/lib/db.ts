@@ -43,6 +43,11 @@ export interface Analytics {
   coursesCompleted: number;
   buyersByGender: BuyerDemographics;
   sentimentByGender: SentimentDemographics;
+  countries: Record<string, number>;
+  devices: {
+    mobile: number;
+    desktop: number;
+  };
 }
 
 export interface Database {
@@ -59,49 +64,47 @@ function initDb() {
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  if (!fs.existsSync(DB_PATH)) {
-    const freshDb: Database = {
-      analytics: {
-        sales: 24,
-        clicks: 843,
-        visits: 1205,
-        coursesCompleted: 15,
-        buyersByGender: { male: 14, female: 10 },
-        sentimentByGender: {
-          malePositive: 4,
-          maleNegative: 1,
-          femalePositive: 3,
-          femaleNegative: 0
-        }
+  const freshDb: Database = {
+    analytics: {
+      sales: 0,
+      clicks: 0,
+      visits: 0,
+      coursesCompleted: 0,
+      buyersByGender: { male: 0, female: 0 },
+      sentimentByGender: {
+        malePositive: 0,
+        maleNegative: 0,
+        femalePositive: 0,
+        femaleNegative: 0
       },
-      reviews: [
-        {
-          id: '1',
-          authorName: 'Yusuf K.',
-          email: 'yusuf@example.com',
-          gender: 'MALE',
-          content: 'This course completely changed my perspective on provision. I was constantly worried about my income, but now I understand ar-Razzaq. Beautifully written!',
-          ratingAverage: 5,
-          subRatings: { depth: 5, clarity: 5, practicality: 5 },
-          sentiment: 'POSITIVE',
-          status: 'PUBLISHED',
-          createdAt: new Date(Date.now() - 100000000).toISOString()
-        },
-        {
-          id: '2',
-          authorName: 'Aisha M.',
-          email: 'aisha@example.com',
-          gender: 'FEMALE',
-          content: 'Very grounded in Quran and Sunnah. It wasn’t a get-rich-quick scheme. It is pure medicine for the heart.',
-          ratingAverage: 4.6,
-          subRatings: { depth: 5, clarity: 4, practicality: 5 },
-          sentiment: 'POSITIVE',
-          status: 'PUBLISHED',
-          createdAt: new Date(Date.now() - 50000000).toISOString()
-        }
-      ]
-    };
+      countries: {},
+      devices: { mobile: 0, desktop: 0 }
+    },
+    reviews: []
+  };
+
+  if (!fs.existsSync(DB_PATH)) {
     fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+  } else {
+    // Migration: ensure new fields exist
+    try {
+      const existing = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+      let changed = false;
+      if (!existing.analytics.countries) {
+        existing.analytics.countries = {};
+        changed = true;
+      }
+      if (!existing.analytics.devices) {
+        existing.analytics.devices = { mobile: 0, desktop: 0 };
+        changed = true;
+      }
+      if (changed) {
+        fs.writeFileSync(DB_PATH, JSON.stringify(existing, null, 2), 'utf-8');
+      }
+    } catch (e) {
+      // If corrupted, reset
+      fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+    }
   }
 }
 

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 import './globals.css';
+import { Analytics } from "@vercel/analytics/react"
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -29,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-sans antialiased text-foreground bg-background flex flex-col min-h-screen" suppressHydrationWarning>
+        <AnalyticsTracker />
         {children}
+        <Analytics />
       </body>
     </html>
   );

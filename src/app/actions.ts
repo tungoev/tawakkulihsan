@@ -2,6 +2,45 @@
 
 import { getDb, saveDb, Review, Gender, SubRatings } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { cookies, headers } from 'next/headers';
+
+export async function trackVisit() {
+  const cookieStore = await cookies();
+  const headersList = await headers();
+  
+  // Check if session cookie exists to avoid double counting
+  if (cookieStore.has('tawakkul_visited')) {
+    return;
+  }
+  
+  const db = getDb();
+  db.analytics.visits += 1;
+  
+  // Detect Country (Vercel provides this header)
+  const country = (headersList.get('x-vercel-ip-country') || 'Unknown').toUpperCase();
+  db.analytics.countries[country] = (db.analytics.countries[country] || 0) + 1;
+  
+  // Detect Device Basic Logic
+  const ua = headersList.get('user-agent') || '';
+  const isMobile = /Mobi|Android|iPhone/i.test(ua);
+  if (isMobile) {
+    db.analytics.devices.mobile += 1;
+  } else {
+    db.analytics.devices.desktop += 1;
+  }
+  
+  saveDb(db);
+  
+  // Set cookie for 24 hours to prevent re-counting same user
+  cookieStore.set('tawakkul_visited', 'true', { 
+    maxAge: 60 * 60 * 24, 
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production'
+  });
+  
+  revalidatePath('/admin');
+}
 
 export async function submitAdvancedReview(formData: FormData) {
   const authorName = formData.get('authorName') as string;
