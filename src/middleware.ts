@@ -10,13 +10,17 @@ export function middleware(req: NextRequest) {
     const adminUser = process.env.ADMIN_USER;
     const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (basicAuth && adminUser && adminPassword) {
-      const authValue = basicAuth.split(' ')[1];
-      const [user, pwd] = atob(authValue).split(':');
+    try {
+      if (basicAuth && adminUser && adminPassword) {
+        const authValue = basicAuth.split(' ')[1];
+        const [user, pwd] = atob(authValue).split(':');
 
-      if (user === adminUser && pwd === adminPassword) {
-        return NextResponse.next();
+        if (user === adminUser && pwd === adminPassword) {
+          return NextResponse.next();
+        }
       }
+    } catch (e) {
+      console.error('Admin Auth Error:', e);
     }
     
     // If auth fails or is missing, prompt for it
