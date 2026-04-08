@@ -1,0 +1,52 @@
+{
+  "analytics": {
+    "sales": 24,
+    "clicks": 843,
+    "visits": 1205,
+    "coursesCompleted": 15,
+    "buyersByGender": {
+      "male": 14,
+      "female": 10
+    },
+    "sentimentByGender": {
+      "malePositive": 4,
+      "maleNegative": 1,
+      "femalePositive": 3,
+      "femaleNegative": 0
+    }
+  },
+  "reviews": [
+    {
+      "id": "1",
+      "authorName": "Yusuf K.",
+      "email": "yusuf@example.com",
+      "gender": "MALE",
+      "content": "This course completely changed my perspective on provision. I was constantly worried about my income, but now I understand ar-Razzaq. Beautifully written!",
+      "ratingAverage": 5,
+      "subRatings": {
+        "depth": 5,
+        "clarity": 5,
+        "practicality": 5
+      },
+      "sentiment": "POSITIVE",
+      "status": "PUBLISHED",
+      "createdAt": "2026-04-04T17:50:04.545Z"
+    },
+    {
+      "id": "2",
+      "authorName": "Aisha M.",
+      "email": "aisha@example.com",
+      "gender": "FEMALE",
+      "content": "Very grounded in Quran and Sunnah. It wasn’t a get-rich-quick scheme. It is pure medicine for the heart.",
+      "ratingAverage": 4.6,
+      "subRatings": {
+        "depth": 5,
+        "clarity": 4,
+        "practicality": 5
+      },
+      "sentiment": "POSITIVE",
+      "status": "PUBLISHED",
+      "createdAt": "2026-04-05T07:43:24.545Z"
+    }
+  ]
+}
