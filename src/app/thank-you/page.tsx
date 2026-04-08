@@ -1,9 +1,9 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 
 export default function ThankYouPage() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 bg-background pt-24 min-h-[70vh] text-center">
-      <div className="text-5xl mb-6">вњЁ</div>
+      <div className="text-5xl mb-6">✨</div>
       <h1 className="font-serif text-4xl text-blue-deep mb-4">Thank you for your purchase.</h1>
       
       <p className="text-muted max-w-md mb-8 mx-auto">

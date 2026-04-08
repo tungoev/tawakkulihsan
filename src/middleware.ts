@@ -7,13 +7,14 @@ export function middleware(req: NextRequest) {
     const basicAuth = req.headers.get('authorization');
     
     // Check if the auth header is correct
-    // For demo purposes, username is 'admin' and password is 'password123'
-    // Encoded in base64: YWRtaW46cGFzc3dvcmQxMjM=
-    if (basicAuth) {
+    const adminUser = process.env.ADMIN_USER;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (basicAuth && adminUser && adminPassword) {
       const authValue = basicAuth.split(' ')[1];
       const [user, pwd] = atob(authValue).split(':');
 
-      if (user === 'admin' && pwd === 'password123') {
+      if (user === adminUser && pwd === adminPassword) {
         return NextResponse.next();
       }
     }

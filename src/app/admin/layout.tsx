@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { Home, LineChart, MessageSquare, Settings } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <nav className="bg-[#151923] border-b border-[#252b36] py-4 px-6 flex justify-between items-center z-10 shadow-md">
         <div className="flex items-center gap-2">
           <Link href="/admin" className="font-serif text-2xl tracking-wide text-white hover:text-white transition-colors flex items-center gap-2">
-            <span className="text-[#c9a84c]">вњ¦</span> Admin Panel
+            <span className="text-[#c9a84c]">✦</span> Admin Panel
           </Link>
         </div>
         <div className="flex items-center gap-4 border-l border-[#252b36] pl-4">

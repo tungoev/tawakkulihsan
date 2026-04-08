@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ export default function IntroPage() {
     const handleScroll = () => {
       const isPastHero = window.scrollY > window.innerHeight * 0.6;
       
-      // РЎРєСЂС‹С‚СЊ РёРЅС„РѕСЂРјРµСЂ, РµСЃР»Рё РјС‹ РїСЂРёР±Р»РёР¶Р°РµРјСЃСЏ Рє РїРѕСЃР»РµРґРЅРµР№ РєРЅРѕРїРєРµ (в‰€600px РґРѕ РєРѕРЅС†Р° СЃС‚СЂР°РЅРёС†С‹)
+      // Скрыть информер, если мы приближаемся к последней кнопке (≈600px до конца страницы)
       const scrolledToBottom = window.innerHeight + window.scrollY;
       const documentHeight = document.documentElement.offsetHeight;
       const pixelsFromBottom = documentHeight - scrolledToBottom;
@@ -70,7 +70,7 @@ export default function IntroPage() {
 
         <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
           <Reveal delay={200}>
-            <div className="text-3xl sm:text-5xl text-gold tracking-widest mb-8 font-serif">ШЁЩђШіЩ’Щ…Щђ Ш§Щ„Щ„ЩЋЩ‘Щ‡Щђ Ш§Щ„Ш±ЩЋЩ‘Ш­Щ’Щ…ЩЋЩ†Щђ Ш§Щ„Ш±ЩЋЩ‘Ш­ЩђЩЉЩ…Щђ</div>
+            <div className="text-3xl sm:text-5xl text-gold tracking-widest mb-8 font-serif">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
           </Reveal>
           
           <Reveal delay={400}>
@@ -169,7 +169,7 @@ export default function IntroPage() {
               { num: "4", title: "The Keys to Rizq", desc: "Seven specific actions from the Quran and Sunnah that open rizq: dhikr, istighfar, Fajr prayer, fasting, sadaqah, silah ar-rahim, du'a. Each with a story and a practice.", tag: "Action" },
               { num: "5", title: "What Blocks Rizq", desc: "Four barriers: sins, haram earnings, severed ties of kinship, extravagance and miserliness. How tawbah opens what was closed.", tag: "Purification" },
               { num: "6", title: "Barakah — The Blessing That Changes Everything", desc: "Why some have much money yet no peace — while others have little, yet it is enough. Where barakah comes from and what removes it. The true goal is not maximum money.", tag: "Blessing" },
-              { num: "7", title: "The Wisdom of Allah in the Distribution of Rizq", desc: "Why wealth is not a reward and poverty is not a punishment. The story of Qarun and the Prophet Ayyub п·є. Sabr and shukr as the two states that determine everything.", tag: "Wisdom" },
+              { num: "7", title: "The Wisdom of Allah in the Distribution of Rizq", desc: "Why wealth is not a reward and poverty is not a punishment. The story of Qarun and the Prophet Ayyub ﷺ. Sabr and shukr as the two states that determine everything.", tag: "Wisdom" },
             ].map((mod, i) => (
               <div key={i} className="flex flex-col sm:flex-row gap-6 p-6 sm:p-8 bg-card hover:bg-background transition-colors items-start">
                 <div className="font-serif text-4xl text-gold font-light sm:w-16">{mod.num}</div>
@@ -188,7 +188,7 @@ export default function IntroPage() {
               { title: "Answer Key", desc: "Every answer with an explanation of the mechanism and a source from the Quran or Sunnah. Open only after completing the test.", tag: "Answers" }
             ].map((mod, i) => (
               <div key={i} className="flex flex-col sm:flex-row gap-6 p-6 sm:p-8 bg-blue-mid hover:bg-blue-deep transition-colors items-start border-t border-blue-deep/50">
-                <div className="font-serif text-4xl text-gold-light font-light sm:w-16">вњ¦</div>
+                <div className="font-serif text-4xl text-gold-light font-light sm:w-16">✦</div>
                 <div className="flex-1">
                   <h3 className="font-medium text-white mb-2">{mod.title}</h3>
                   <p className="text-sm text-white/60 leading-relaxed">{mod.desc}</p>
@@ -208,10 +208,10 @@ export default function IntroPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: "рџ“–", title: "Read Slowly", text: "This is not a textbook to be 'completed.' Stop wherever something touches you. Allow the meaning to settle." },
-              { icon: "рџ¤І", title: "Begin with Intention", text: "Before each module, say inwardly: 'I am reading this to better understand Allah and His generosity.' Intention changes how the material is received." },
-              { icon: "вњЌпёЏ", title: "Complete the Practice", text: "At the end of each module — one action. Small. Concrete. It is through this that knowledge becomes part of life, rather than merely information." },
-              { icon: "рџ—“", title: "One Module a Day", text: "The ideal pace is one module per day, or every other day. Do not rush to finish everything at once. Better one module lived deeply." }
+              { icon: "📖", title: "Read Slowly", text: "This is not a textbook to be 'completed.' Stop wherever something touches you. Allow the meaning to settle." },
+              { icon: "🤲", title: "Begin with Intention", text: "Before each module, say inwardly: 'I am reading this to better understand Allah and His generosity.' Intention changes how the material is received." },
+              { icon: "✍️", title: "Complete the Practice", text: "At the end of each module — one action. Small. Concrete. It is through this that knowledge becomes part of life, rather than merely information." },
+              { icon: "🗓️", title: "One Module a Day", text: "The ideal pace is one module per day, or every other day. Do not rush to finish everything at once. Better one module lived deeply." }
             ].map((tip, i) => (
               <div key={i} className="bg-card p-6 md:p-8 border-b-2 border-gold shadow-sm transition-transform hover:-translate-y-1">
                 <div className="text-2xl mb-4">{tip.icon}</div>
