@@ -15,8 +15,8 @@ export interface LavaInvoiceResponse {
  * Creates a new invoice (contract) in Lava Top
  */
 export async function createLavaInvoice(email: string = 'customer@example.com') {
-  const apiKey = process.env.LAVA_API_KEY;
-  const productId = process.env.LAVA_PRODUCT_ID;
+  const apiKey = process.env.LAVA_API_KEY?.trim();
+  const productId = process.env.LAVA_PRODUCT_ID?.trim();
 
   if (!apiKey || !productId) {
     throw new Error('Lava Top API configuration missing');
