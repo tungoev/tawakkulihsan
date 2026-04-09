@@ -32,7 +32,7 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     },
     body: JSON.stringify({
       productId: productId,
-      offerId: productId, 
+      offerId: 'fb14c150-4fa7-48f4-97af-4b26cfe80e83', // Real Offer ID found via browser
       sum: 27,
       currency: 'USD', // Added based on latest diagnostic error
       email: email, 
