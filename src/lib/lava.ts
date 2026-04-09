@@ -33,6 +33,7 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     body: JSON.stringify({
       productId: productId,
       sum: 27,
+      email: email, // Mandatory field found by diagnostics
       orderId: `order_${Date.now()}`,
     }),
   });
