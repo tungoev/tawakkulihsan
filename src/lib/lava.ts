@@ -3,12 +3,13 @@ import crypto from 'crypto';
 const LAVA_API_BASE = 'https://gate.lava.top';
 
 export interface LavaInvoiceResponse {
-  data: {
-    id: string;
+  id: string;
+  status: string;
+  amountTotal: {
+    currency: string;
     amount: number;
-    status: string;
-    url: string;
   };
+  paymentUrl: string;
 }
 
 /**
