@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const LAVA_API_BASE = 'https://api.lava.top';
+const LAVA_API_BASE = 'https://gate.lava.top';
 
 export interface LavaInvoiceResponse {
   data: {
@@ -26,11 +26,14 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'Authorization': `Bearer ${apiKey}`,
-      'X-Api-Key': apiKey, // Alternative header used by some Lava versions
+      'X-Api-Key': apiKey,
     },
     body: JSON.stringify({
       productId: productId,
+      sum: 27,
+      orderId: `order_${Date.now()}`,
     }),
   });
 
