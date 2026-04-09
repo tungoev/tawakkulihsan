@@ -46,7 +46,10 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     throw new Error(`Failed to create Lava Top invoice: ${response.statusText} (${errorBody})`);
   }
 
-  return await response.json();
+  const responseData = await response.json();
+  console.log('Lava Top API Raw Response:', JSON.stringify(responseData, null, 2));
+  
+  return responseData;
 }
 
 /**

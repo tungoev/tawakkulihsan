@@ -16,10 +16,14 @@ export default function CheckoutPage() {
           // Redirect to Lava Top
           window.location.href = data.url;
         } else {
-          setError(data.error || 'Failed to initialize payment.');
+          // Provide a clean message from the server or a fallback
+          const errorMsg = data.error || data.message || 'The payment server returned an empty response.';
+          setError(errorMsg);
+          console.error('Checkout error:', data);
         }
-      } catch (err) {
-        setError('A network error occurred. Please try again.');
+      } catch (err: any) {
+        console.error('Checkout fetch error:', err);
+        setError(`Connection error: ${err.message || 'Please check your internet and try again.'}`);
       }
     }
 
