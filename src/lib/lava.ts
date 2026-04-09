@@ -32,8 +32,9 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     },
     body: JSON.stringify({
       productId: productId,
+      offerId: productId, // Required by some versions of Lava v3
       sum: 27,
-      email: email, // Mandatory field found by diagnostics
+      email: email, 
       orderId: `order_${Date.now()}`,
     }),
   });
