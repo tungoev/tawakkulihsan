@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { 
   ArrowRight, 
   CheckCircle2, 
@@ -27,7 +27,6 @@ export default async function Home() {
       <IncludedSection />
       <ExperienceSection />
       <FoundationSection />
-      <AuthorSection />
       <FaqSection />
       <ReviewSection initialReviews={publishedReviews} />
       <FinalCtaSection />
@@ -316,33 +315,7 @@ function FoundationSection() {
   );
 }
 
-// 9. Author Placeholder
-function AuthorSection() {
-  return (
-    <section className="py-24 px-6 bg-card border-b border-gold/10">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          <img 
-            src="/author.jpg" 
-            alt="Muhammad ibn Bekkhan" 
-            className="w-48 h-48 rounded-full object-cover border-2 border-gold/20 shrink-0 shadow-lg" 
-          />
-          <div>
-            <p className="text-gold text-sm tracking-[0.2em] uppercase font-medium mb-3">About the Author</p>
-            <h2 className="font-serif text-3xl text-blue-deep mb-4">Muhammad ibn Bekkhan</h2>
-            <div className="space-y-4 text-muted leading-relaxed">
-              <p>Muhammad ibn Bekkhan created this course for Muslims seeking a clearer and more grounded understanding of rizq, tawakkul, and barakah through the Qur'an and Sunnah.</p>
-              <p>It was written for those who feel the weight of anxiety around provision and want to return to a calmer, more truthful way of seeing wealth, effort, and reliance upon Allah. Rather than offering quick answers or empty inspiration, this course brings the reader back to essential foundations: who Ar-Razzaq is, what rizq truly means, what tawakkul really requires, and where barakah is found.</p>
-              <p>Carefully structured and easy to follow, the course is intended to be both reflective and practical — beneficial for sincere readers at different stages of their journey.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// 10. FAQ
+// 9. FAQ
 function FaqSection() {
   const faqs = [
     {
@@ -394,7 +367,7 @@ function FaqSection() {
   );
 }
 
-// 11. Final CTA
+// 10. Final CTA
 function FinalCtaSection() {
   return (
     <section className="py-32 px-6 bg-blue-mid text-center relative overflow-hidden">
@@ -404,7 +377,7 @@ function FinalCtaSection() {
       
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="font-serif text-3xl md:text-5xl text-gold mb-8 leading-tight">
-          إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ
+          إِنَّ اللَّهَ هُوَ الرَّЗَّاقُ ذُو الْقُوَّةِ الْمَتِينُ
         </div>
         <p className="font-serif text-xl md:text-3xl font-light italic text-white/90 mb-4">
           "Indeed, it is Allah who is the [continual] Provider, the firm possessor of strength."
@@ -426,7 +399,7 @@ function FinalCtaSection() {
   );
 }
 
-// 12. Footer
+// 11. Footer
 function Footer() {
   return (
     <footer className="py-12 px-6 bg-[#0a172d] text-center border-t border-white/5">

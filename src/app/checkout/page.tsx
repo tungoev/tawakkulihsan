@@ -1,16 +1,63 @@
-﻿import Link from 'next/link';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 export default function CheckoutPage() {
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function initPayment() {
+      try {
+        const response = await fetch('/api/payment/create', { method: 'POST' });
+        const data = await response.json();
+
+        if (data.success && data.url) {
+          // Redirect to Lava Top
+          window.location.href = data.url;
+        } else {
+          setError(data.error || 'Failed to initialize payment.');
+        }
+      } catch (err) {
+        setError('A network error occurred. Please try again.');
+      }
+    }
+
+    initPayment();
+  }, []);
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 bg-background pt-24 min-h-[70vh]">
-      <h1 className="font-serif text-4xl text-blue-deep mb-4">Checkout</h1>
-      <p className="text-muted max-w-md text-center mb-8">
-        Payment integration placeholder. Stripe or another provider will be connected here to process the $27 payment.
-      </p>
-      <Link href="/thank-you" className="bg-gold text-blue-deep px-8 py-3 font-medium shadow-md transition-transform hover:-translate-y-0.5">
-        [Simulate Payment]
-      </Link>
-      <p className="mt-12 text-sm text-gold/80 italic">TODO: Connect payment provider</p>
+      <div className="max-w-md w-full text-center">
+        {!error ? (
+          <>
+            <div className="flex justify-center mb-8">
+              <Loader2 className="w-12 h-12 text-gold animate-spin" />
+            </div>
+            <h1 className="font-serif text-3xl text-blue-deep mb-4 italic">
+              Preparing Secure Checkout
+            </h1>
+            <p className="text-muted leading-relaxed">
+              We are connecting you to Lava Top to complete your purchase of <br />
+              <strong>"Rizq, Tawakkul & Barakah"</strong>.
+            </p>
+            <p className="text-xs text-muted/60 mt-8 uppercase tracking-widest">
+              Please do not refresh the page
+            </p>
+          </>
+        ) : (
+          <div className="p-8 border border-red-900/10 bg-red-50/50 rounded-sm">
+            <h1 className="font-serif text-2xl text-red-900 mb-4">Something went wrong</h1>
+            <p className="text-muted mb-6">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="bg-gold text-blue-deep px-8 py-3 font-medium transition-transform hover:-translate-y-0.5"
+            >
+              Try Again
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
