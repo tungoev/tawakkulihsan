@@ -65,7 +65,7 @@ function initDb() {
   if (!fs.existsSync(dir)) {
     try {
       fs.mkdirSync(dir, { recursive: true });
-    } catch (e) {
+    } catch (e: any) {
       if (!isVercel) console.error('Failed to create DB directory:', e);
     }
   }
@@ -92,7 +92,7 @@ function initDb() {
   if (!fs.existsSync(DB_PATH)) {
     try {
       if (!isVercel) fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
-    } catch (e) {
+    } catch (e: any) {
       // Silent on Vercel
     }
   } else {
@@ -128,7 +128,7 @@ export function getDb(): Database {
       const raw = fs.readFileSync(DB_PATH, 'utf-8');
       return JSON.parse(raw);
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('Database read error, returning fresh state:', e);
   }
   
@@ -160,7 +160,7 @@ export function saveDb(data: Database) {
   try {
     initDb();
     fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (e) {
-    console.warn('Failed to save to database (likely read-only filesystem):', e.message);
+  } catch (e: any) {
+    console.warn('Failed to save to database (likely read-only filesystem):', e?.message || e);
   }
 }
