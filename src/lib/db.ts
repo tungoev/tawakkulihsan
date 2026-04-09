@@ -59,9 +59,15 @@ const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
 
 // Initialize dummy db if it doesn't exist
 function initDb() {
+  const isVercel = process.env.VERCEL === '1';
   const dir = path.dirname(DB_PATH);
+  
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch (e) {
+      if (!isVercel) console.error('Failed to create DB directory:', e);
+    }
   }
 
   const freshDb: Database = {
@@ -84,7 +90,11 @@ function initDb() {
   };
 
   if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+    try {
+      if (!isVercel) fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+    } catch (e) {
+      // Silent on Vercel
+    }
   } else {
     // Migration: ensure new fields exist
     try {
@@ -98,23 +108,59 @@ function initDb() {
         existing.analytics.devices = { mobile: 0, desktop: 0 };
         changed = true;
       }
-      if (changed) {
+      if (changed && !isVercel) {
         fs.writeFileSync(DB_PATH, JSON.stringify(existing, null, 2), 'utf-8');
       }
     } catch (e) {
-      // If corrupted, reset
-      fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+      if (!isVercel) {
+        try {
+          fs.writeFileSync(DB_PATH, JSON.stringify(freshDb, null, 2), 'utf-8');
+        } catch (we) {}
+      }
     }
   }
 }
 
 export function getDb(): Database {
-  initDb();
-  const raw = fs.readFileSync(DB_PATH, 'utf-8');
-  return JSON.parse(raw);
+  try {
+    initDb();
+    if (fs.existsSync(DB_PATH)) {
+      const raw = fs.readFileSync(DB_PATH, 'utf-8');
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('Database read error, returning fresh state:', e);
+  }
+  
+  // Return fresh state if reading fails
+  return {
+    analytics: {
+      sales: 0,
+      clicks: 0,
+      visits: 0,
+      coursesCompleted: 0,
+      buyersByGender: { male: 0, female: 0 },
+      sentimentByGender: {
+        malePositive: 0,
+        maleNegative: 0,
+        femalePositive: 0,
+        femaleNegative: 0
+      },
+      countries: {},
+      devices: { mobile: 0, desktop: 0 }
+    },
+    reviews: []
+  };
 }
 
 export function saveDb(data: Database) {
-  initDb();
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+  const isVercel = process.env.VERCEL === '1';
+  if (isVercel) return; // Skip saving on read-only filesystem
+
+  try {
+    initDb();
+    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (e) {
+    console.warn('Failed to save to database (likely read-only filesystem):', e.message);
+  }
 }

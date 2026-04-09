@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const LAVA_API_BASE = 'https://gate.lava.top';
+const LAVA_API_BASE = 'https://api.lava.top';
 
 export interface LavaInvoiceResponse {
   data: {
@@ -27,12 +27,10 @@ export async function createLavaInvoice(email: string = 'customer@example.com') 
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${apiKey}`,
+      'X-Api-Key': apiKey, // Alternative header used by some Lava versions
     },
-    // Lava Top v3 API expectations for invoice creation
     body: JSON.stringify({
       productId: productId,
-      // Some versions of Lava Top API might require additional fields or use different ones
-      // for digital products. Based on standard v3, productId is the core.
     }),
   });
 
