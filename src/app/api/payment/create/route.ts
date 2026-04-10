@@ -3,8 +3,14 @@ import { createLavaInvoice } from '@/lib/lava';
 
 export async function POST(req: Request) {
   try {
-    const result = await createLavaInvoice();
-    console.log('Payment API: Processing response from Lava Top');
+    const { email } = await req.json();
+    
+    if (!email) {
+      return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 });
+    }
+
+    const result = await createLavaInvoice(email);
+    console.log(`Payment API: Processing response from Lava Top for ${email}`);
     
     // Safety check for result itself
     if (!result) {

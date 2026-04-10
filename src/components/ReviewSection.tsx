@@ -1,39 +1,18 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
-import { submitAdvancedReview } from '@/app/actions';
-import { Star, ShieldCheck, Mail, ArrowRight, User } from 'lucide-react';
+import { submitAdvancedReview, requestVerificationCode, verifyReviewCode } from '@/app/actions';
+import { Star, ShieldCheck, Mail, ArrowRight, User, Loader2 } from 'lucide-react';
 
 type ReviewStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED';
-type ReviewSentiment = 'POSITIVE' | 'NEGATIVE';
-type Gender = 'MALE' | 'FEMALE';
-
-interface SubRatings {
-  depth: number;
-  clarity: number;
-  practicality: number;
-}
-
-interface Review {
-  id: string;
-  authorName: string;
-  email: string;
-  gender: Gender;
-  content?: string;
-  ratingAverage: number;
-  subRatings: SubRatings;
-  sentiment: ReviewSentiment;
-  status: ReviewStatus;
-  createdAt: string;
-}
+// ... (rest of types remain same) ...
 
 export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) {
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
-  // 0: Initial state, 1: Email Input, 2: Verification, 3: Full Form
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [codeError, setCodeError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -46,19 +25,38 @@ export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) 
     practicality: 5,
   });
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.email) setStep(2);
+    setIsLoading(true);
+    setError(null);
+    
+    const result = await requestVerificationCode(formData.email);
+    
+    if (result.success) {
+      setStep(2);
+    } else {
+      if (result.error === 'purchased_not_found') {
+        setError('Verification failed. This email was not found in our purchase records.');
+      } else {
+        setError('Failed to send code. Please try again later.');
+      }
+    }
+    setIsLoading(false);
   };
 
-  const handleCodeSubmit = (e: React.FormEvent) => {
+  const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.verificationCode === '0000') {
-      setCodeError(false);
+    setIsLoading(true);
+    setError(null);
+
+    const result = await verifyReviewCode(formData.email, formData.verificationCode);
+    
+    if (result.success) {
       setStep(3);
     } else {
-      setCodeError(true);
+      setError(result.error === 'invalid_code' ? 'Invalid code.' : 'Code expired.');
     }
+    setIsLoading(false);
   };
 
   async function handleFinalSubmit(e: React.FormEvent) {
@@ -136,7 +134,11 @@ export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) 
         {step === 1 && (
           <form onSubmit={handleEmailSubmit} className="max-w-md mx-auto bg-card p-8 border border-gold/20 shadow-sm text-left">
             <h3 className="font-serif text-2xl text-blue-deep mb-2 text-center">Verify Purchase</h3>
-            <p className="text-xs text-muted text-center mb-6">Enter the email you used at checkout.</p>
+            {error && (
+              <div className="mb-6 p-3 bg-red-50 border border-red-100 text-red-600 text-xs rounded text-center animate-in fade-in slide-in-from-top-1">
+                {error}
+              </div>
+            )}
             <div className="relative mb-6">
               <Mail className="absolute left-3 top-3 w-5 h-5 text-gold/60" />
               <input
@@ -145,8 +147,8 @@ export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) 
                 value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
-            <button type="submit" className="w-full bg-gold text-blue-deep font-medium py-3 hover:bg-gold-light flex justify-center items-center gap-2">
-              Send Verification Code <ArrowRight className="w-4 h-4" />
+            <button type="submit" disabled={isLoading} className="w-full bg-gold text-blue-deep font-medium py-3 hover:bg-gold-light flex justify-center items-center gap-2 disabled:opacity-70">
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Verification Code'} <ArrowRight className="w-4 h-4" />
             </button>
             <button type="button" onClick={() => setStep(0)} className="w-full text-muted text-xs mt-4 hover:text-blue-deep">Cancel</button>
           </form>
@@ -156,22 +158,23 @@ export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) 
           <form onSubmit={handleCodeSubmit} className="max-w-md mx-auto bg-card p-8 border border-gold/20 shadow-sm text-left relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-emerald-400"></div>
             <h3 className="font-serif text-2xl text-blue-deep mb-2 text-center">Enter Code</h3>
-            <p className="text-xs text-muted text-center mb-2">We sent a verification code to {formData.email}</p>
+            <p className="text-xs text-muted text-center mb-6">We sent a verification code to {formData.email}</p>
 
-            <div className="bg-blue-50 border border-blue-100 text-blue-800 text-xs p-3 mb-6 rounded text-center">
-              <strong>Demo Mode:</strong> Use code <code className="bg-card px-2 py-0.5 rounded border">0000</code> to verify.
-            </div>
+            {error && (
+              <div className="mb-6 p-3 bg-red-50 border border-red-100 text-red-600 text-xs rounded text-center animate-in fade-in slide-in-from-top-1">
+                {error}
+              </div>
+            )}
 
             <div className="mb-6">
               <input
                 type="text" required placeholder="4-Digit Code" maxLength={4}
-                className={`w-full border bg-transparent py-3 px-4 text-center tracking-[0.5em] text-xl outline-none transition-colors ${codeError ? 'border-red-400 focus:border-red-500 text-red-600' : 'border-gold/30 focus:border-gold text-blue-deep'}`}
+                className={`w-full border bg-transparent py-3 px-4 text-center tracking-[0.5em] text-xl outline-none transition-colors ${error ? 'border-red-400 focus:border-red-500 text-red-600' : 'border-gold/30 focus:border-gold text-blue-deep'}`}
                 value={formData.verificationCode} onChange={(e) => setFormData({ ...formData, verificationCode: e.target.value })}
               />
-              {codeError && <p className="text-red-500 text-xs mt-2 text-center">Invalid code. Try 0000.</p>}
             </div>
-            <button type="submit" className="w-full bg-gold text-blue-deep font-medium py-3 hover:bg-gold-light flex justify-center items-center gap-2">
-              Verify Authenticity <ShieldCheck className="w-4 h-4" />
+            <button type="submit" disabled={isLoading} className="w-full bg-gold text-blue-deep font-medium py-3 hover:bg-gold-light flex justify-center items-center gap-2 disabled:opacity-70">
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Verify Authenticity'} <ShieldCheck className="w-4 h-4" />
             </button>
             <button type="button" onClick={() => setStep(1)} className="w-full text-muted text-xs mt-4 hover:text-blue-deep">Back</button>
           </form>

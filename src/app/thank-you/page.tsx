@@ -19,7 +19,7 @@ export default function ThankYouPage() {
       </div>
 
       <p className="text-xs text-muted/70 mt-4">
-        For any questions or support, contact: support@[yourdomain].com
+        For any questions or support, contact: support@tawakkulihsan.com
       </p>
     </div>
   );

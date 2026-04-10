@@ -60,7 +60,7 @@ export default function IntroPage() {
   return (
     <main id="top" className="flex flex-col w-full selection:bg-gold/20 font-light text-foreground bg-background relative">
       
-      {/* в”Ђв”Ђ HERO в”Ђв”Ђ */}
+      {/* --- HERO --- */}
       <section className="relative min-h-screen bg-blue-mid flex flex-col items-center justify-center text-center px-6 py-24 overflow-hidden">
         {/* Gradients */}
         <div className="absolute inset-0 z-0">
@@ -112,7 +112,7 @@ export default function IntroPage() {
         </div>
       </section>
 
-      {/* в”Ђв”Ђ INTRO BLOCK в”Ђв”Ђ */}
+      {/* --- INTRO BLOCK --- */}
       <section className="bg-card py-24 px-6 border-b border-gold/10">
         <Reveal className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 sm:gap-16 items-start">
           <div>
@@ -130,7 +130,7 @@ export default function IntroPage() {
         </Reveal>
       </section>
 
-      {/* в”Ђв”Ђ HOW TO TAKE в”Ђв”Ђ */}
+      {/* --- HOW TO TAKE --- */}
       <section id="instructions" className="py-24 px-6 bg-background">
         <Reveal className="max-w-5xl mx-auto">
           <p className="text-[11px] font-medium tracking-[0.2em] uppercase text-gold mb-3">How to Take the Course</p>
@@ -154,7 +154,7 @@ export default function IntroPage() {
         </Reveal>
       </section>
 
-      {/* в”Ђв”Ђ MODULES в”Ђв”Ђ */}
+      {/* --- MODULES --- */}
       <section className="py-24 px-6 bg-card border-y border-gold/10">
         <Reveal className="max-w-4xl mx-auto">
           <p className="text-[11px] font-medium tracking-[0.2em] uppercase text-gold mb-3">Contents</p>
@@ -200,7 +200,7 @@ export default function IntroPage() {
         </Reveal>
       </section>
 
-      {/* в”Ђв”Ђ TIPS в”Ђв”Ђ */}
+      {/* --- TIPS --- */}
       <section className="py-24 px-6 bg-background">
         <Reveal className="max-w-5xl mx-auto">
           <p className="text-[11px] font-medium tracking-[0.2em] uppercase text-gold mb-3">Before You Begin</p>
@@ -223,7 +223,7 @@ export default function IntroPage() {
         </Reveal>
       </section>
 
-      {/* в”Ђв”Ђ FINAL CTA / CLOSING в”Ђв”Ђ */}
+      {/* --- FINAL CTA / CLOSING --- */}
       <section className="py-24 px-6 bg-blue-mid text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(201,168,76,0.08)_0%,transparent_70%)]" />
         
@@ -243,7 +243,7 @@ export default function IntroPage() {
         </Reveal>
       </section>
 
-      {/* в”Ђв”Ђ Floating Action Buttons в”Ђв”Ђ */}
+      {/* --- Floating Action Buttons --- */}
       <div 
         className={`fixed z-50 transition-all duration-700 ease-out flex items-end sm:items-center justify-between w-full max-w-7xl mx-auto px-6 lg:px-10 left-0 right-0 pointer-events-none ${showStickyCta ? 'bottom-6 lg:bottom-10 opacity-100 translate-y-0' : '-bottom-20 opacity-0 translate-y-10'}`}
       >

@@ -28,8 +28,18 @@ export async function POST(req: Request) {
       // Update Analytics
       db.analytics.sales += 1;
       
-      // Update demographics based on data if available (Lava Top might send buyer details)
-      // For now, we update general count.
+      // Extract buyer email from webhook (captured either via our checkout or Lava's own form)
+      const buyerEmail = data.email || data.data?.email || data.payer_email;
+      
+      if (buyerEmail) {
+        // Ensure email is unique in buyers list
+        if (!db.buyers.includes(buyerEmail)) {
+          db.buyers.push(buyerEmail);
+          console.log(`New buyer verified: ${buyerEmail}`);
+        }
+      } else {
+        console.warn('Payment success received but no email found in webhook payload', JSON.stringify(data));
+      }
       
       saveDb(db);
       console.log('Sale recorded in database via Webhook');

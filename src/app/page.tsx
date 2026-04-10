@@ -56,7 +56,7 @@ function HeroSection() {
 
       <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
         <div className="text-gold opacity-90 text-sm tracking-[0.2em] uppercase font-medium mb-6">
-          A Qur'an & Sunnah Based Masterclass
+          A Qur’an & Sunnah based masterclass
         </div>
         <h1 className="font-serif text-5xl md:text-7xl font-light text-white leading-[1.15] mb-6">
           Rizq, Tawakkul, <span className="text-gold-light italic">&</span> Barakah
@@ -377,7 +377,7 @@ function FinalCtaSection() {
       
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="font-serif text-3xl md:text-5xl text-gold mb-8 leading-tight">
-          إِنَّ اللَّهَ هُوَ الرَّЗَّاقُ ذُو الْقُوَّةِ الْمَتِينُ
+          إِنَّ اللَّهَ هُوَ الرَّزَّاقُ ذُو الْقُوَّةِ الْمَتِينُ
         </div>
         <p className="font-serif text-xl md:text-3xl font-light italic text-white/90 mb-4">
           "Indeed, it is Allah who is the [continual] Provider, the firm possessor of strength."
@@ -413,7 +413,7 @@ function Footer() {
         </div>
         
         <p className="text-white/40 text-sm mb-8">
-          For any questions: support@[yourdomain].com
+          For any questions: support@tawakkulihsan.com
         </p>
 
         <p className="text-white/30 text-xs">

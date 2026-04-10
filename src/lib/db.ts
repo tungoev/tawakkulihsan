@@ -50,9 +50,16 @@ export interface Analytics {
   };
 }
 
+export interface VerificationCode {
+  code: string;
+  expiresAt: number;
+}
+
 export interface Database {
   analytics: Analytics;
   reviews: Review[];
+  buyers: string[]; // Emails of unique purchasers
+  verifications: Record<string, VerificationCode>; // email -> code mapping
 }
 
 const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
@@ -86,7 +93,9 @@ function initDb() {
       countries: {},
       devices: { mobile: 0, desktop: 0 }
     },
-    reviews: []
+    reviews: [],
+    buyers: [],
+    verifications: {}
   };
 
   if (!fs.existsSync(DB_PATH)) {
@@ -106,6 +115,14 @@ function initDb() {
       }
       if (!existing.analytics.devices) {
         existing.analytics.devices = { mobile: 0, desktop: 0 };
+        changed = true;
+      }
+      if (!existing.buyers) {
+        existing.buyers = [];
+        changed = true;
+      }
+      if (!existing.verifications) {
+        existing.verifications = {};
         changed = true;
       }
       if (changed && !isVercel) {
@@ -149,7 +166,9 @@ export function getDb(): Database {
       countries: {},
       devices: { mobile: 0, desktop: 0 }
     },
-    reviews: []
+    reviews: [],
+    buyers: [],
+    verifications: {}
   };
 }
 

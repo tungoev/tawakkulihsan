@@ -1,11 +1,11 @@
 {
   "analytics": {
-    "sales": 0,
+    "sales": 2,
     "clicks": 0,
-    "visits": 1,
+    "visits": 3,
     "coursesCompleted": 0,
     "buyersByGender": {
-      "male": 0,
+      "male": 2,
       "female": 0
     },
     "sentimentByGender": {
@@ -15,12 +15,26 @@
       "femaleNegative": 0
     },
     "countries": {
-      "UNKNOWN": 1
+      "UNKNOWN": 3
     },
     "devices": {
       "mobile": 0,
-      "desktop": 1
+      "desktop": 3
     }
   },
-  "reviews": []
+  "reviews": [],
+  "buyers": [
+    "victory-stable@example.com",
+    "tungoev.magomed@gmail.com"
+  ],
+  "verifications": {
+    "victory-stable@example.com": {
+      "code": "1134",
+      "expiresAt": 1775758374381
+    },
+    "tungoev.magomed@gmail.com": {
+      "code": "8941",
+      "expiresAt": 1775760867888
+    }
+  }
 }
