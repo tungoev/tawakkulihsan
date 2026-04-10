@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { submitAdvancedReview, requestVerificationCode, verifyReviewCode } from '@/app/actions';
-import { Star, ShieldCheck, Mail, ArrowRight, User, Loader2 } from 'lucide-react';
+import {Star, ShieldCheck, Mail, ArrowRight, User, Loader2} from 'lucide-react';
+import {Review, Gender} from '@/lib/db';
 
 type ReviewStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED';
-// ... (rest of types remain same) ...
 
 export function ReviewSection({ initialReviews }: { initialReviews: Review[] }) {
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
